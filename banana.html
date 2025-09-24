@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Бананы</title>
+  <style>
+    body { position: relative; height: 100vh; margin: 0; background: #ffeaa7; overflow: hidden; font-family: Arial, sans-serif; }
+    #score { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-size: 2em; }
+    #banana { position: absolute; width: 100px; cursor: pointer; transition: transform 0.1s; }
+    #banana:active { transform: scale(0.9); }
+    #gameover { 
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      font-size: 5em; color: red; display: none; text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="score">0</div>
+  <img id="banana" src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Banana-Single.jpg">
+  <div id="gameover">КОНЕЦ ИГРЫ</div>
+  <audio id="music" src="music.mp3"></audio>
+  <script>
+    let count = 0;
+    let gameOver = false;
+    const score = document.getElementById("score");
+    const banana = document.getElementById("banana");
+    const music = document.getElementById("music");
+    const gameoverText = document.getElementById("gameover");
+
+    function moveBanana() {
+      const maxX = window.innerWidth - banana.clientWidth;
+      const maxY = window.innerHeight - banana.clientHeight;
+      banana.style.left = Math.random() * maxX + "px";
+      banana.style.top = Math.random() * maxY + "px";
+    }
+
+    moveBanana();
+
+    banana.addEventListener("click", () => {
+      if (gameOver) return;
+      count++;
+      score.textContent = count;
+      if (count === 10) {
+        music.play();
+        gameOver = true;
+        banana.style.display = "none";
+        gameoverText.style.display = "block";
+      }
+      if (!gameOver) moveBanana();
+    });
+  </script>
+</body>
+</html>
